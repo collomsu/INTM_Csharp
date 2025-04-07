@@ -10,6 +10,7 @@ namespace Semaine1
     {
         static void Main(string[] args)
         {
+            // Exercice 1
             BasicOperation(1, 2, '+');
             BasicOperation(1, 2, 'L');
             BasicOperation(1, 0, '/');
@@ -18,18 +19,24 @@ namespace Semaine1
             IntegerDivision(5, 2);
             IntegerDivision(8, 0);
 
-
+            // Exercice 2
             Console.WriteLine(GoodDay(4));
             Console.WriteLine(GoodDay(7));
             Console.WriteLine(GoodDay(12));
             Console.WriteLine(GoodDay(15));
             Console.WriteLine(GoodDay(20));
 
+            // Exercice 3
             PyramidConstruction(8, false);
             PyramidConstruction(12, true);
 
+            // Exercice 4
             Console.WriteLine(Factorial(5));
             Console.WriteLine(FactorialRec(5));
+
+            // Exercice 5
+            DisplayPrimes();
+
         }
 
         // Exercice 1
@@ -248,5 +255,45 @@ namespace Semaine1
             }
         }
 
+        // Exerice 5
+
+        /// <summary>
+        /// Renvoie si le nombre passé en paramètre est premier ou non.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        static bool isPrime(int value)
+        {
+            int b = 2;
+            for (; b <= Math.Sqrt(value); b++)
+            {
+                if (value % b == 0)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Affiche les nombres de 1 à 100 avec l'information de s'ils sont premier ou non.
+        /// </summary>
+        static void DisplayPrimes()
+        {
+            string prime;
+            for (int i = 1; i <= 100; i++)
+            {
+                if (isPrime(i))
+                {
+                    prime = "est premier.";
+                }
+                else
+                {
+                    prime = "n'est pas premier.";
+                }
+                Console.WriteLine($"{i} {prime}");
+            }
+        }
     }
 }
