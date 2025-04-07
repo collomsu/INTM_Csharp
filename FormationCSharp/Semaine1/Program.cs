@@ -17,6 +17,13 @@ namespace Semaine1
             IntegerDivision(8, 2);
             IntegerDivision(5, 2);
             IntegerDivision(8, 0);
+
+
+            Console.WriteLine(GoodDay(4));
+            Console.WriteLine(GoodDay(7));
+            Console.WriteLine(GoodDay(12));
+            Console.WriteLine(GoodDay(15));
+            Console.WriteLine(GoodDay(20));
         }
 
         // Exercice 1
@@ -107,6 +114,41 @@ namespace Semaine1
             {
                 Console.WriteLine("Opération invalide");
             }
+        }
+
+        // Exercice 2
+
+        /// <summary>
+        /// Renvoie l'heure de la journée avec un message personnalisé en fonction de la plage horaire.
+        /// </summary>
+        /// <param name="heure"></param>
+        /// <returns></returns>
+        static string GoodDay(int heure)
+        {
+            string message = $"Il est {heure} H, ";
+
+            if (heure >= 0 && heure < 6)
+            {
+                message += "Merveilleuse nuit !";
+            }
+            else if (heure >= 6 &&  heure < 12)
+            {
+                message += "Bonne matinée !";
+            }
+            else if (heure == 12)
+            {
+                message += "Bon appétit !";
+            }
+            else if (heure >= 13 && heure <= 18)
+            {
+                message += "Profitez de votre après-midi !";
+            }
+            else
+            {
+                message += "Passez une bonne soirée !";
+            }
+
+            return message;
         }
     }
 }
