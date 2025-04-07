@@ -37,6 +37,10 @@ namespace Semaine1
             // Exercice 5
             DisplayPrimes();
 
+            // Ecercice 6
+            Console.WriteLine(Gcd(200, 50));
+            Console.WriteLine(Gcd(485, 75));
+
         }
 
         // Exercice 1
@@ -294,6 +298,30 @@ namespace Semaine1
                 }
                 Console.WriteLine($"{i} {prime}");
             }
+        }
+
+        // Exercice 6
+
+        /// <summary>
+        /// Retourne le plus grand diviseur commun entre les nombres a et b.
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
+        static int Gcd(int a, int b)
+        {
+            int r = 0;
+            int q = 0;
+            do
+            {
+                r = a % b;
+                q = (a - r) / b;
+                a = b;
+                b = r;
+
+            } while (r != 0);
+
+            return a;
         }
     }
 }
