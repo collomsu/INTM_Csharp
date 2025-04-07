@@ -24,6 +24,9 @@ namespace Semaine1
             Console.WriteLine(GoodDay(12));
             Console.WriteLine(GoodDay(15));
             Console.WriteLine(GoodDay(20));
+
+            PyramidConstruction(8, false);
+            PyramidConstruction(12, true);
         }
 
         // Exercice 1
@@ -149,6 +152,61 @@ namespace Semaine1
             }
 
             return message;
+        }
+
+        // Exercice 3
+
+        /// <summary>
+        /// Dessine une pyramide de hauteur n pouvant contenir des stries si isSmooth vaut vrai.
+        /// </summary>
+        /// <param name="n"></param>
+        /// <param name="isSmooth"></param>
+        static void PyramidConstruction(int n, bool isSmooth)
+        {
+            if (n > 0)
+            {
+                int j = 1;
+                int gauche = 0, droite = 0;
+                int baseN = 1 + (n - 1) * 2;
+                char c = '+';
+
+                do
+                {
+                    gauche = n - j;
+                    droite = n - 1 + j;
+
+                    if (isSmooth)
+                    {
+                        if (j % 2 == 0)
+                        {
+                            c = '-';
+                        }
+                        else
+                        {
+                            c = '+';
+                        }
+                    }
+
+                    for (int i = 0; i < baseN; i++)
+                    {
+                        if (i >= gauche && i < droite)
+                        {
+                            Console.Write(c);
+                        }
+                        else
+                        {
+                            Console.Write(" ");
+                        }
+                    }
+                    Console.WriteLine();
+
+                    j++;
+                } while (j <= n);
+            }
+            else
+            {
+                Console.WriteLine("n doit être supérieur à 0.");
+            }
         }
     }
 }
