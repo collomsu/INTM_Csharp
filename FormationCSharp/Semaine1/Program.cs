@@ -27,6 +27,9 @@ namespace Semaine1
 
             PyramidConstruction(8, false);
             PyramidConstruction(12, true);
+
+            Console.WriteLine(Factorial(5));
+            Console.WriteLine(FactorialRec(5));
         }
 
         // Exercice 1
@@ -208,5 +211,42 @@ namespace Semaine1
                 Console.WriteLine("n doit être supérieur à 0.");
             }
         }
+
+        // Exercice 4
+
+        /// <summary>
+        /// Calcul la factorielle du nombre n positif.
+        /// </summary>
+        /// <param name="n"></param>
+        /// <returns></returns>
+        static int Factorial(int n)
+        {
+            int res = 1;
+
+            for (int i = 1; i <= n; i++)
+            {
+                res *= i;
+            }
+
+            return res;
+        }
+
+        /// <summary>
+        /// Calcul récursivement la factorielle du nombre n positif.
+        /// </summary>
+        /// <param name="n"></param>
+        /// <returns></returns>
+        static int FactorialRec(int n)
+        {
+            if (n == 0)
+            {
+                return 1;
+            }
+            else
+            {
+                return n * FactorialRec(n - 1);
+            }
+        }
+
     }
 }
