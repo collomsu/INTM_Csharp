@@ -48,11 +48,30 @@ namespace Semaine1
             Serie2 serie2 = new Serie2();
 
             // Exercice 1
+            Console.WriteLine();
             Console.WriteLine(serie2.LinearSearch(tab, 2));
             Console.WriteLine(serie2.LinearSearch(tab, 12));
 
             Console.WriteLine(serie2.BinarySearch(tab2, 9));
             Console.WriteLine(serie2.BinarySearch(tab2, 15));
+
+            // Exercice 2
+            int[] m1 = new int[] { 1, 2, 3 };
+            int[] m2 = new int[] { -1, -4, 0 };
+
+            int[] m3 = new int[] { 3, -4, 5 };
+            int[] m4 = new int[] { 1, 2, 8 };
+
+            int[][] m5 = serie2.BuildingMatrix(m1, m2);
+            int[][] m6 = serie2.BuildingMatrix(m3, m4);
+
+            serie2.displayMatrix(m5);
+            serie2.displayMatrix(m6);
+
+            serie2.displayMatrix(serie2.Addition(m5, m6));
+            serie2.displayMatrix(serie2.Substraction(m5, m6));
+
+            serie2.displayMatrix(serie2.Multiplication(m5, m6));
 
             Console.ReadKey();
         }

@@ -50,20 +50,21 @@ namespace Semaine1
 
             while (queue - tete >= 1)
             {
-                if(i == (tete + queue) / 2)
+
+                if ((queue + tete) / 2 == i)
                 {
-                    i--;
+                    i++;
                 }
                 else
                 {
-                    i = (tete + queue) / 2;
+                    i = (queue + tete) / 2;
                 }
-
-                if (valeur == i)
+                
+                if (valeur == tableau[i])
                 {
                     return i;
                 }
-                else if (valeur < i)
+                else if (valeur < tableau[i])
                 {
                     queue = i;
                 }
@@ -74,6 +75,103 @@ namespace Semaine1
             }
 
             return -1;
+        }
+
+        // Exercice 2
+
+        public int[][] BuildingMatrix(int[] leftVector, int[] rightVector) 
+        {
+            int[][] res = new int[leftVector.Length][];
+            for (int i = 0; i < res.Length; i++)
+            {
+                res[i] = new int[rightVector.Length];
+            }
+
+            for (int i = 0; i < leftVector.Length; i++)
+            {
+                for (int j = 0; j < rightVector.Length; j++)
+                {
+                    res[i][j] = leftVector[i] * rightVector[j];
+                    Console.WriteLine($"{res[i][j]}");
+                }
+            }
+
+            return res;
+        }
+
+        public int[][] Addition(int[][] leftVector, int[][] rightVector)
+        {
+            int[][] res = new int[leftVector.Length][];
+            for (int i = 0; i < res.Length; i++)
+            {
+                res[i] = new int[rightVector.Length];
+            }
+
+            for (int i = 0; i < leftVector.Length; i++)
+            {
+                for (int j = 0; j < leftVector[i].Length; j++)
+                {
+                    res[i][j] = leftVector[i][j] + rightVector[i][j];
+                }
+            }
+
+            return res;
+        }
+
+        public int[][] Substraction(int[][] leftVector, int[][] rightVector)
+        {
+            int[][] res = new int[leftVector.Length][];
+            for (int i = 0; i < res.Length; i++)
+            {
+                res[i] = new int[rightVector.Length];
+            }
+
+            for (int i = 0; i < leftVector.Length; i++)
+            {
+                for (int j = 0; j < leftVector[i].Length; j++)
+                {
+                    res[i][j] = leftVector[i][j] - rightVector[i][j];
+                }
+            }
+
+            return res;
+        }
+
+        public int[][] Multiplication(int[][] leftVector, int[][] rightVector)
+        {
+            int[][] res = new int[leftVector.Length][];
+            for (int i = 0; i < res.Length; i++)
+            {
+                res[i] = new int[rightVector.Length];
+            }
+
+            for (int i = 0; i < leftVector.Length; i++)
+            {
+                for (int j = 0; j < leftVector[i].Length; j++)
+                {
+                    
+                    for (int k = 0; k < rightVector[j].Length; k++)
+                    {
+                        res[i][k] += leftVector[i][j] * rightVector[j][k];
+                    }
+                }
+            }
+
+            return res;
+        }
+
+        public void displayMatrix(int[][] matrix)
+        {
+            for (int i = 0; i < matrix.Length; i++)
+            {
+                Console.Write("{ ");
+                for (int j = 0; j < matrix[i].Length; j++)
+                {
+                    Console.Write($"{matrix[i][j]} ");
+                }
+                Console.WriteLine("}");
+            }
+            Console.WriteLine();
         }
     }
 }
