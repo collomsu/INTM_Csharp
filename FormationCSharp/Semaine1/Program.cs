@@ -73,6 +73,15 @@ namespace Semaine1
 
             serie2.displayMatrix(serie2.Multiplication(m5, m6));
 
+            // Exercice 3
+
+            int[] ex3 = serie2.EratosthenesSieve(100);
+
+            for (int i = 0; i < ex3.Length; i++)
+            {
+                Console.Write($"{ex3[i]} ");
+            }
+
             Console.ReadKey();
         }
 

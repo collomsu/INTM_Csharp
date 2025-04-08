@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 /// <summary>
 /// Summary description for Serie2
@@ -172,6 +173,40 @@ namespace Semaine1
                 Console.WriteLine("}");
             }
             Console.WriteLine();
+        }
+
+        // Exercice 3
+
+        public int[] EratosthenesSieve(int n)
+        {
+            if (n < 2)
+            {
+                return null;
+            }
+
+            List<int> bres = new List<int>();
+
+            for (int j = 2; j < n; j++)
+            {
+                bres.Add(j);
+            }
+
+            int i = 1;
+            int m = bres.ElementAt(bres.Count - 1);
+            
+            while (i <= Math.Sqrt(m))
+            {
+                i++;
+                for (int j = 0; j < bres.Count; j++)
+                {
+                    if (bres.ElementAt(j) != i && bres.ElementAt(j) % i == 0)
+                    {
+                        bres.Remove(bres.ElementAt(j));
+                    }
+                }
+            }
+
+            return bres.ToArray();
         }
     }
 }
