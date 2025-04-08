@@ -10,6 +10,7 @@ namespace Semaine1
     {
         static void Main(string[] args)
         {
+            // Serie 1
             // Exercice 1
             BasicOperation(1, 2, '+');
             BasicOperation(1, 2, 'L');
@@ -41,6 +42,19 @@ namespace Semaine1
             Console.WriteLine(Gcd(200, 50));
             Console.WriteLine(Gcd(485, 75));
 
+            // Serie 2
+            int[] tab = new int[] { 1, 4, 8, 2, 7 };
+            int[] tab2 = new int[] { 1, 2, 8, 9, 12 };
+            Serie2 serie2 = new Serie2();
+
+            // Exercice 1
+            Console.WriteLine(serie2.LinearSearch(tab, 2));
+            Console.WriteLine(serie2.LinearSearch(tab, 12));
+
+            Console.WriteLine(serie2.BinarySearch(tab2, 9));
+            Console.WriteLine(serie2.BinarySearch(tab2, 15));
+
+            Console.ReadKey();
         }
 
         // Exercice 1
@@ -320,7 +334,7 @@ namespace Semaine1
                 b = r;
 
             } while (r != 0);
-
+            
             return a;
         }
     }
