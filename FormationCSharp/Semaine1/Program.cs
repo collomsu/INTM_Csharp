@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -89,6 +91,49 @@ namespace Semaine1
 
             Serie2.Qcm[] qcms = new Serie2.Qcm[] { qcm1, qcm2 };
             serie2.AskQuestions(qcms);
+
+
+            //StringBuilder sb = new StringBuilder();
+
+            //for (int i = 1; i <= 100; i++)
+            //{
+            //    sb.Append(i);
+            //    if (i < 100)
+            //    {
+            //        sb.Append('-');
+            //    }
+            //}
+
+            //Console.WriteLine(sb.ToString());
+
+            //string path = "C:\\Users\\wksadmin\\Documents\\fichier.txt";
+            //FileStream fs = new FileStream(path, FileMode.Open, FileAccess.ReadWrite);
+            //StreamReader reader = new StreamReader(fs);
+            //while (!reader.EndOfStream)
+            //{
+            //    Console.WriteLine(reader.ReadLine());
+            //}
+
+            //reader.Close();
+
+            //StreamWriter writer = new StreamWriter(path);
+            //string input = Console.ReadLine();
+            //while (input != "")
+            //{
+            //    writer.WriteLine(input);
+            //    input = Console.ReadLine();
+            //}
+            //writer.Close();
+
+
+            // Serie 3
+            Serie3 serie3 = new Serie3();
+
+            // Exercice 1
+            string input = "C:\\Users\\wksadmin\\Documents\\moyeleve.csv";
+            string output = "C:\\Users\\wksadmin\\Documents\\moymatiere.csv";
+
+            serie3.SchoolMeans(input, output);
 
             Console.ReadKey();
         }
