@@ -82,6 +82,14 @@ namespace Semaine1
                 Console.Write($"{ex3[i]} ");
             }
 
+            // Exercice 4
+            Serie2.Qcm qcm1 = new Serie2.Qcm("Quel est le résultat de 3² ?", new string[] { "6", "9", "30" }, 1, 2);
+            Serie2.Qcm qcm2 = new Serie2.Qcm("Quel est le résultat de 2² ?", new string[] { "4", "9", "30" }, 0, 2);
+            Console.WriteLine(serie2.AskQuestion(qcm1));
+
+            Serie2.Qcm[] qcms = new Serie2.Qcm[] { qcm1, qcm2 };
+            serie2.AskQuestions(qcms);
+
             Console.ReadKey();
         }
 

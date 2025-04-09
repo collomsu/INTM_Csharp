@@ -80,6 +80,12 @@ namespace Semaine1
 
         // Exercice 2
 
+        /// <summary>
+        /// Retourne la matrice resultante de la fusion des deux vecteurs passés en paramètre.
+        /// </summary>
+        /// <param name="leftVector"></param>
+        /// <param name="rightVector"></param>
+        /// <returns></returns>
         public int[][] BuildingMatrix(int[] leftVector, int[] rightVector) 
         {
             int[][] res = new int[leftVector.Length][];
@@ -100,6 +106,13 @@ namespace Semaine1
             return res;
         }
 
+
+        /// <summary>
+        /// Retourne la matrice resultante de l'addition des deux matrices passées en paramètre.
+        /// </summary>
+        /// <param name="leftVector"></param>
+        /// <param name="rightVector"></param>
+        /// <returns></returns>
         public int[][] Addition(int[][] leftVector, int[][] rightVector)
         {
             int[][] res = new int[leftVector.Length][];
@@ -119,6 +132,12 @@ namespace Semaine1
             return res;
         }
 
+        /// <summary>
+        /// Retourne la matrice resultante de la soustraction des deux matrices passées en paramètre.
+        /// </summary>
+        /// <param name="leftVector"></param>
+        /// <param name="rightVector"></param>
+        /// <returns></returns>
         public int[][] Substraction(int[][] leftVector, int[][] rightVector)
         {
             int[][] res = new int[leftVector.Length][];
@@ -138,6 +157,12 @@ namespace Semaine1
             return res;
         }
 
+        /// <summary>
+        /// Retourne la matrice resultante de la multiplication des deux matrices passées en paramètre.
+        /// </summary>
+        /// <param name="leftVector"></param>
+        /// <param name="rightVector"></param>
+        /// <returns></returns>
         public int[][] Multiplication(int[][] leftVector, int[][] rightVector)
         {
             int[][] res = new int[leftVector.Length][];
@@ -161,6 +186,10 @@ namespace Semaine1
             return res;
         }
 
+        /// <summary>
+        /// Affiche la matrice passé en paramètre.
+        /// </summary>
+        /// <param name="matrix"></param>
         public void displayMatrix(int[][] matrix)
         {
             for (int i = 0; i < matrix.Length; i++)
@@ -177,6 +206,11 @@ namespace Semaine1
 
         // Exercice 3
 
+        /// <summary>
+        /// Retourne l'ensemble des nombres premiers compris entre 1 et n compris.
+        /// </summary>
+        /// <param name="n"></param>
+        /// <returns></returns>
         public int[] EratosthenesSieve(int n)
         {
             if (n < 2)
@@ -207,6 +241,97 @@ namespace Semaine1
             }
 
             return bres.ToArray();
+        }
+
+        // Exercice 4
+
+
+        public struct Qcm
+        {
+            public string question;
+            public string[] answers;
+            public int solution;
+            public int weight;
+
+            public Qcm(string question, string[] answers, int solution, int weight)
+            {
+                this.question = question;
+                this.answers = answers;
+                this.solution = solution;
+                this.weight = weight;
+            }
+        }
+
+        /// <summary>
+        /// Vérifie si le qcm est valide.
+        /// </summary>
+        /// <param name="qcm"></param>
+        /// <returns></returns>
+        public bool QcmValidity(Qcm qcm)
+        {
+            if (qcm.solution < 0 || qcm.solution >= qcm.answers.Length)
+            {
+                return false;
+            }
+            else if (qcm.weight <= 0)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Affiche le QCM et demande la réponse à l'utilisateur. Un score est retourné en fonction de la réponse donnée.
+        /// </summary>
+        /// <param name="qcm"></param>
+        /// <returns></returns>
+        public int AskQuestion(Qcm qcm)
+        {
+            if (!QcmValidity(qcm))
+            {
+                throw new ArgumentException();
+            }
+
+            int reponse = 0;
+            int points = qcm.weight;
+
+            Console.WriteLine();
+
+            while (reponse != qcm.solution + 1)
+            {
+                Console.WriteLine(qcm.question);
+                for (int i = 0; i < qcm.answers.Length; i++)
+                {
+                    Console.Write($"{i+1}. {qcm.answers[i]} ");
+                }
+                Console.Write("Réponse : ");
+                reponse = int.Parse(Console.ReadLine());
+
+                if (reponse != qcm.solution + 1)
+                {
+                    Console.WriteLine("Réponse invalide !");
+                    points = 0;
+                }
+            }
+
+            return points;
+        }
+
+        /// <summary>
+        /// Pose les questions de chaque qcm de la liste, et affiche le score de l'utilisateur ainsi que le score maximum.
+        /// </summary>
+        /// <param name="qcm"></param>
+        public void AskQuestions(Qcm[] qcm)
+        {
+            int maxScore = 0;
+            int score = 0;
+            for (int i = 0; i < qcm.Length; i++)
+            {
+                maxScore += qcm[i].weight;
+                score += AskQuestion(qcm[i]);
+            }
+            Console.WriteLine($"Résultat du questionnaire : {score} / {maxScore}");
         }
     }
 }
