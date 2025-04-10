@@ -170,6 +170,12 @@ namespace Semaine1
 
             Console.WriteLine(serie4.MorseEncryption("WESH"));
 
+            // Exerice 2
+            string sentence = "(a{}[])";
+            string sentence2 = "(a{)}[])";
+            Console.WriteLine(serie4.BracketsControls(sentence));
+            Console.WriteLine(serie4.BracketsControls(sentence2));
+
             Console.ReadKey();
         }
 

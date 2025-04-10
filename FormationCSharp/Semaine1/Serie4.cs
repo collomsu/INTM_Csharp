@@ -163,5 +163,49 @@ namespace Semaine1
 
             return morse;
         }
+
+        // Exercice 2
+
+        // 1) Nous voulons traité les données une a une en fonction de l'ordre dans lequel elles ont été rentré.
+        // Une fois qu'une donnée a été traité nous n'avons plus besoin de revenir dessus, et l'ont veux les traiter méthode FIFO.
+        // Pour cela la structure la plus adapté est une Queue fonctionnement en FIFO.
+
+        public bool BracketsControls(string sentence)
+        {
+            Queue<char> queue = new Queue<char>();
+            foreach (char c in sentence)
+            {
+                queue.Enqueue(c);
+            }
+
+            char ch = queue.Dequeue();
+
+            return TraitementBracket(queue, ch);
+        }
+
+        public bool TraitementBracket(Queue<char> q, char lastc)
+        {
+            char c = q.Dequeue();
+            switch (c)
+            {
+                case '(':
+                case '{':
+                case '[':
+                    return TraitementBracket(q, c);
+                    break;
+                case ')':
+                    return lastc == '(';
+                    break;
+                case '}':
+                    return lastc == '{';
+                    break;
+                case ']':
+                    return lastc == '[';
+                    break;
+                default:
+                    return TraitementBracket(q, lastc);
+                    break;
+            }
+        }
     }
 }
