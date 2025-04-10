@@ -154,7 +154,21 @@ namespace Semaine1
             List<int> li = new List<int>() { 2000, 5000, 10000, 20000, 50000, 100000 };
             List<int> liShort = new List<int>() { 2000, 5000, 10000, 20000 };
 
-            serie3.DisplayPerformance(liShort, 50);
+            //serie3.DisplayPerformance(liShort, 50);
+
+            // Serie 4
+            Serie4 serie4 = new Serie4();
+
+            // Exercice 1
+            string code = "==.=.==.=...==.==.==...==.=.=...=.......==.==...==.==.==...=.==.=...=.=.=...=";
+            Console.WriteLine($"Nombre de lettres : {serie4.LettersCount(code)}");
+            Console.WriteLine($"Nombre de mots : {serie4.WordsCount(code)}");
+            Console.WriteLine(serie4.MorseTranslation(code));
+
+            string codeCorrupt = "==.=..==..=....==.==.==...==.=.=...=..........==.==....==.==..==....=.==..=...=.=.=....=....===..=";
+            Console.WriteLine(serie4.EfficientMorseTranslation(codeCorrupt));
+
+            Console.WriteLine(serie4.MorseEncryption("WESH"));
 
             Console.ReadKey();
         }

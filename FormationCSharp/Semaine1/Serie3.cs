@@ -11,8 +11,6 @@ namespace Semaine1
 {
     internal class Serie3
     {
-
-
         struct ResultatEtudiant
         {
             public string nom;
