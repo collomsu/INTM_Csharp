@@ -135,6 +135,28 @@ namespace Semaine1
 
             serie3.SchoolMeans(input, output);
 
+            int[] arr1 = new int[] { 5, 25, 12, 2, 1, 3, 5, 2, 56, 97, 45, 20, 1, 4 };
+            int[] arr2 = new int[] { 5, 25, 12, 2, 1, 3, 5, 2, 56, 97, 45, 20, 1, 4 };
+
+            Console.WriteLine(serie3.UseInsertionSort(arr1));
+            Console.WriteLine(serie3.UseQuickSort(arr2));
+
+            List<int[]> larr = serie3.ArraysGenerator(10000);
+
+            Console.WriteLine(serie3.UseInsertionSort(larr.ElementAt(0)));
+            Console.WriteLine(serie3.UseInsertionSort(larr.ElementAt(1)));
+
+
+            Serie3.SortData data = serie3.PerformanceTest(10000, 10);
+
+            Console.WriteLine($"insertionMean = {data.insertionMean}, insertionStd = {data.insertionStd}, quickMean = {data.quickMean}, quickStd = {data.quickStd}");
+
+            List<int> li = new List<int>() { 2000, 5000, 10000, 20000, 50000, 100000 };
+            List<int> liShort = new List<int>() { 2000, 5000, 10000, 20000 };
+
+
+            serie3.DisplayPerformance(liShort, 50);
+
             Console.ReadKey();
         }
 
