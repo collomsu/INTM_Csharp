@@ -154,7 +154,6 @@ namespace Semaine1
             List<int> li = new List<int>() { 2000, 5000, 10000, 20000, 50000, 100000 };
             List<int> liShort = new List<int>() { 2000, 5000, 10000, 20000 };
 
-
             serie3.DisplayPerformance(liShort, 50);
 
             Console.ReadKey();
