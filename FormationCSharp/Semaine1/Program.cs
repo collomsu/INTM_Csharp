@@ -130,11 +130,16 @@ namespace Semaine1
             Serie3 serie3 = new Serie3();
 
             // Exercice 1
+            Console.WriteLine();
+            Console.WriteLine("=== Serie 3 : Exerice 1 ===");
             string input = "C:\\Users\\wksadmin\\Documents\\moyeleve.csv";
             string output = "C:\\Users\\wksadmin\\Documents\\moymatiere.csv";
 
             serie3.SchoolMeans(input, output);
 
+            // Exercice 2
+            Console.WriteLine();
+            Console.WriteLine("=== Serie 3 : Exerice 2 ===");
             int[] arr1 = new int[] { 5, 25, 12, 2, 1, 3, 5, 2, 56, 97, 45, 20, 1, 4 };
             int[] arr2 = new int[] { 5, 25, 12, 2, 1, 3, 5, 2, 56, 97, 45, 20, 1, 4 };
 
@@ -160,6 +165,8 @@ namespace Semaine1
             Serie4 serie4 = new Serie4();
 
             // Exercice 1
+            Console.WriteLine();
+            Console.WriteLine("=== Serie 4 : Exerice 1 ===");
             string code = "==.=.==.=...==.==.==...==.=.=...=.......==.==...==.==.==...=.==.=...=.=.=...=";
             Console.WriteLine($"Nombre de lettres : {serie4.LettersCount(code)}");
             Console.WriteLine($"Nombre de mots : {serie4.WordsCount(code)}");
@@ -171,6 +178,8 @@ namespace Semaine1
             Console.WriteLine(serie4.MorseEncryption("WESH"));
 
             // Exerice 2
+            Console.WriteLine();
+            Console.WriteLine("=== Serie 4 : Exerice 2 ===");
             string sentence = "(a{}[])";
             string sentence2 = "(a{)}[])";
             Console.WriteLine(serie4.BracketsControls(sentence));
@@ -219,6 +228,39 @@ namespace Semaine1
 
             Console.WriteLine(serie4.ClearMeetingPeriod(new DateTime(2020, 02, 11, 3, 0, 0), new DateTime(2020, 02, 11, 10, 0, 0)));
             serie4.DisplayMeetings();
+
+            // Percolation
+            Console.WriteLine();
+            Console.WriteLine("=== Percolation ===");
+
+            bool[][] open =
+            {
+                new bool[] { true, false, true, true, true, true, },
+                new bool[] { true, false, false, true, false, false, },
+                new bool[] { false, false, false, true, false, false, },
+                new bool[] { false, false, true, true, true, false, },
+                new bool[] { true, true, false, true, true, false, },
+                new bool[] { true, true, false, true, false, false, }
+            };
+            bool[][] full =
+            {
+                new bool[] { true, false, true, true, true, true, },
+                new bool[] { true, false, false, true, false, false, },
+                new bool[] { false, false, false, true, false, false, },
+                new bool[] { false, false, true, true, true, false, },
+                new bool[] { false, false, false, true, true, false, },
+                new bool[] { false, false, false, true, false, false, }
+            };
+
+            Percolation perco = new Percolation(new Percolation.Perco(open, full));
+            Console.WriteLine(perco.Percolate());
+
+            List<KeyValuePair<int, int>> poss = perco.CloseNeighbors(1, 2);
+
+            foreach (var pos in poss)
+            {
+                Console.WriteLine($"x: {pos.Key} , y: {pos.Value}");
+            }
 
             Console.ReadKey();
         }

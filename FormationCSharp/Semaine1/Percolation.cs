@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 /// <summary>
 /// Summary description for Class1
@@ -58,7 +59,7 @@ namespace Semaine1
 
             for (int i = 0; i < percolation.full[lastIdx].Length; i++)
             {
-                if (isFull(percolation[lastIdx][i]))
+                if (isFull(lastIdx, i))
                 {
                     return true;
                 }
@@ -67,6 +68,30 @@ namespace Semaine1
             return false;
         }
 
+        public List<KeyValuePair<int, int>> CloseNeighbors(int i, int j)
+        {
+            List<KeyValuePair<int, int>> poss = new List<KeyValuePair<int, int>>();
+            if (i > 0)
+            {
+                poss.Add(new KeyValuePair<int, int>(i-1, j));
+            }
 
+            if (i < percolation.open.Length - 1)
+            {
+                poss.Add(new KeyValuePair<int, int>(i + 1, j));
+            }
+
+            if (j > 0)
+            {
+                poss.Add(new KeyValuePair<int, int>(i, j - 1));
+            }
+
+            if (j < percolation.open[0].Length - 1)
+            {
+                poss.Add(new KeyValuePair<int, int>(i, j + 1));
+            }
+
+            return poss;
+        }
     }
 }

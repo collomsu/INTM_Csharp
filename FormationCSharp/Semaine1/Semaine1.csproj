@@ -47,7 +47,8 @@
     <Compile Include="Serie2.cs" />  
 	<Compile Include="Serie3.cs" />
 	<Compile Include="Serie4.cs" />
-	  <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Percolation.cs" />
+	<Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
