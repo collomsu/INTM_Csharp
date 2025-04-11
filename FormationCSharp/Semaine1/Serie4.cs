@@ -3,6 +3,7 @@
 /// </summary>
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Semaine1
 {
@@ -16,11 +17,13 @@ namespace Semaine1
         public Dictionary<string, char> dicoMorse;
         public Dictionary<char, string> dicoAlphabet;
 
+
         public Serie4()
         {
             dicoMorse = new Dictionary<string, char>();
             dicoAlphabet = new Dictionary<char, string>();
             dicoPhone = new Dictionary<string, string>();
+            sdicoReunion = new SortedDictionary<DateTime, TimeSpan>();
 
             string[] morseAlph = { "=.==", "==.=.=.=", "==.=.==.=", "==.=.=", "=", "=.=.==.=", "==.==.=", "=.=.=.=", "=.=", "=.==.==.==", "==.=.==", "=.==.=.=", "==.==", "==.=", "==.==.==", "=.==.==.=", "==.==.=.==", "=.==.=", "=.=.=", "==", "=.=.==", "=.=.=.==", "=.==.==", "==.=.=.==", "==.=.==.==", "==.==.=.=" };
             char[] alphabetAlph = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
@@ -298,6 +301,128 @@ namespace Semaine1
 
                 Console.WriteLine("-----------------------");
             }
+        }
+
+        // Exercice 4
+
+        // 1) Pour une liste de taille N en C# le cout d'ajout d'un élément vaut :
+        // - Insertion au début : N inversions
+        // - Insertion au milieu : N/2 inversions
+        // - Insertion à la fin : 0 inversion
+
+        // 2) En prenant le pire cas, donc avec un parcours iteratif du premier element au dernier sur une liste triée ou non triée on aurait N-1 comparaisons.
+
+        public SortedDictionary<DateTime, TimeSpan> sdicoReunion;
+
+        public bool isEmpty()
+        {
+            return sdicoReunion.Count == 0;
+        }
+
+        public void SetRangeOfDates(DateTime begin, DateTime end)
+        {
+            sdicoReunion.Add(begin, new TimeSpan(0));
+            sdicoReunion.Add(end, new TimeSpan(0));
+        }
+
+        public void DisplayMeetings()
+        {
+            Console.WriteLine($"Emploi du temps : {sdicoReunion.First()} - {sdicoReunion.Last()}");
+            Console.WriteLine("------------------------------------------------------------------");
+            
+            if (sdicoReunion.Count > 2)
+            {
+                int i = 1;
+                foreach (var reunion in sdicoReunion)
+                {
+                    if (reunion.Value != null)
+                    {
+                        Console.WriteLine($"Réunion {i}       : {reunion.Key} - {reunion.Key.Add(reunion.Value)}");
+                        i++;
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine("Pas de réunions programmées");
+            }
+
+            Console.WriteLine("------------------------------------------------------------------");
+        }
+
+        public KeyValuePair<DateTime, DateTime> ClosestElements(DateTime beginMeeting)
+        {
+            KeyValuePair<DateTime, DateTime> datePair = new KeyValuePair<DateTime, DateTime>();
+            DateTime dateBefore = sdicoReunion.First().Key;
+            DateTime dateAfter = sdicoReunion.Last().Key;
+
+            foreach (var date in sdicoReunion.Keys)
+            {
+                if (DateTime.Compare(date, beginMeeting) <= 0 && DateTime.Compare(date, dateBefore) > 0)
+                {
+                    dateBefore = date;
+                }
+                else if (DateTime.Compare(date, beginMeeting) > 0 && DateTime.Compare(date, dateAfter) < 0)
+                {
+                    dateAfter = date;
+                }
+            }
+
+            return new KeyValuePair<DateTime, DateTime>(dateBefore, dateAfter);
+        }
+
+        public bool AddBusinessMeeting(DateTime date, TimeSpan duration)
+        {
+            KeyValuePair<DateTime, DateTime> closestDate = ClosestElements(date);
+            if (DateTime.Compare(closestDate.Key.Add(sdicoReunion[closestDate.Key]), date) < 0 && DateTime.Compare(closestDate.Value, date.Add(duration)) > 0)
+            {
+                sdicoReunion.Add(date, duration);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool DeleteBusinessMeeting(DateTime date, TimeSpan duration)
+        {
+            return sdicoReunion.Remove(date);
+        }
+
+        public int ClearMeetingPeriod(DateTime begin, DateTime end)
+        {
+            KeyValuePair<DateTime, DateTime> closestDebut = ClosestElements(begin);
+            KeyValuePair<DateTime, DateTime> closestFin = ClosestElements(end);
+
+            int nbDeleted = 0;
+            int deleted = 1;
+            while (deleted > 0)
+            {
+                deleted = 0;
+                if (DateTime.Compare(closestDebut.Key.Add(sdicoReunion[closestDebut.Key]), begin) > 0)
+                {
+                    DeleteBusinessMeeting(closestDebut.Key, sdicoReunion[closestDebut.Key]);
+                    closestDebut = ClosestElements(begin);
+                    deleted++;
+                }
+                else if (DateTime.Compare(closestDebut.Value, begin) > 0 && DateTime.Compare(closestDebut.Value, end) < 0)
+                {
+                    DeleteBusinessMeeting(closestDebut.Value, sdicoReunion[closestDebut.Value]);
+                    closestDebut = ClosestElements(begin);
+                    deleted++;
+                }
+                else if (DateTime.Compare(closestFin.Key, begin) > 0)
+                {
+                    DeleteBusinessMeeting(closestFin.Key, sdicoReunion[closestDebut.Key]);
+                    closestFin = ClosestElements(end);
+                    deleted++;
+                }
+
+                nbDeleted += deleted;
+            }
+
+            return nbDeleted;
         }
     }
 }

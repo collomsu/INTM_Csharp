@@ -195,6 +195,31 @@ namespace Semaine1
 
             serie4.DisplayPhoneBook();
 
+            // Exercice 4
+            Console.WriteLine();
+            Console.WriteLine("=== Serie 4 : Exerice 4 ===");
+
+            Console.WriteLine(serie4.isEmpty());
+            serie4.SetRangeOfDates(new DateTime(2020, 01, 01), new DateTime(2030, 12, 31));
+            Console.WriteLine(serie4.isEmpty());
+
+            serie4.DisplayMeetings();
+            Console.WriteLine(serie4.AddBusinessMeeting(new DateTime(2020, 02, 10), new TimeSpan(4, 0, 0)));
+            Console.WriteLine(serie4.AddBusinessMeeting(new DateTime(2020, 02, 10), new TimeSpan(4, 0, 0)));
+            Console.WriteLine(serie4.AddBusinessMeeting(new DateTime(2020, 02, 11), new TimeSpan(4, 0, 0)));
+            Console.WriteLine(serie4.AddBusinessMeeting(new DateTime(2020, 02, 11, 5, 0, 0), new TimeSpan(4, 0, 0)));
+            Console.WriteLine(serie4.AddBusinessMeeting(new DateTime(2020, 02, 11, 9, 0, 1), new TimeSpan(2, 0, 0)));
+            Console.WriteLine(serie4.AddBusinessMeeting(new DateTime(2020, 02, 11, 11, 0, 1), new TimeSpan(2, 0, 0)));
+
+
+            serie4.DisplayMeetings();
+            Console.WriteLine(serie4.DeleteBusinessMeeting(new DateTime(2020, 02, 11), new TimeSpan(4, 0, 0)));
+            Console.WriteLine(serie4.AddBusinessMeeting(new DateTime(2020, 02, 11), new TimeSpan(4, 0, 0)));
+            serie4.DisplayMeetings();
+
+            Console.WriteLine(serie4.ClearMeetingPeriod(new DateTime(2020, 02, 11, 3, 0, 0), new DateTime(2020, 02, 11, 10, 0, 0)));
+            serie4.DisplayMeetings();
+
             Console.ReadKey();
         }
 
