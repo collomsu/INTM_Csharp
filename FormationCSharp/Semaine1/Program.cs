@@ -176,6 +176,25 @@ namespace Semaine1
             Console.WriteLine(serie4.BracketsControls(sentence));
             Console.WriteLine(serie4.BracketsControls(sentence2));
 
+            // Exercice 3
+            Console.WriteLine();
+            Console.WriteLine("=== Serie 4 : Exerice 3 ===");
+
+            Console.WriteLine(serie4.AddPhoneNumber("0684444464", "Papa"));
+            Console.WriteLine(serie4.AddPhoneNumber("0668021201", "Maman"));
+            Console.WriteLine(serie4.AddPhoneNumber("1668081201", "Erreur"));
+            Console.WriteLine(serie4.AddPhoneNumber("0068021201", "Erreur"));
+
+            serie4.PhoneContact("0668021201");
+            Console.WriteLine(serie4.ContainsPhoneContact("0684447964"));
+
+            serie4.DisplayPhoneBook();
+
+            serie4.DeletePhoneNumber("0668021201");
+            serie4.DeletePhoneNumber("0684447964");
+
+            serie4.DisplayPhoneBook();
+
             Console.ReadKey();
         }
 

@@ -20,6 +20,7 @@ namespace Semaine1
         {
             dicoMorse = new Dictionary<string, char>();
             dicoAlphabet = new Dictionary<char, string>();
+            dicoPhone = new Dictionary<string, string>();
 
             string[] morseAlph = { "=.==", "==.=.=.=", "==.=.==.=", "==.=.=", "=", "=.=.==.=", "==.==.=", "=.=.=.=", "=.=", "=.==.==.==", "==.=.==", "=.==.=.=", "==.==", "==.=", "==.==.==", "=.==.==.=", "==.==.=.==", "=.==.=", "=.=.=", "==", "=.=.==", "=.=.=.==", "=.==.==", "==.=.=.==", "==.=.==.==", "==.==.=.=" };
             char[] alphabetAlph = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
@@ -205,6 +206,97 @@ namespace Semaine1
                 default:
                     return TraitementBracket(q, lastc);
                     break;
+            }
+        }
+
+        // Exercice 3
+
+        // 1) L'annuaire téléphonique demandant une association numero, nom je pense que le choix d'un Dictionary me parait être le plus adéquat.
+        // Il va nous permettre d'avoir cette assoication en imposant que les numéros soit unique et qu'il soit toujours associé à un nom.
+
+        public Dictionary<string, string> dicoPhone;
+
+        public bool IsValidPhoneNumber(string phoneNumber)
+        {
+            if (phoneNumber != null & phoneNumber.Length == 10)
+            {
+                for (int i = 0; i < phoneNumber.Length; i++)
+                {
+                    switch (i)
+                    {
+                        case 0:
+                            if (char.GetNumericValue(phoneNumber[i]) != 0)
+                            {
+                                return false;
+                            }
+                            break;
+                        case 1:
+                            if (char.GetNumericValue(phoneNumber[i]) <= 0)
+                            {
+                                return false;
+                            }
+                            break;
+                        default:
+                            if (char.GetNumericValue(phoneNumber[i]) < 0)
+                            {
+                                return false;
+                            }
+                            break;
+                    }
+                }
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool ContainsPhoneContact(string phoneNumber)
+        {
+            return dicoPhone.ContainsKey(phoneNumber);
+        }
+
+        public void PhoneContact(string phoneNumber)
+        {
+            Console.WriteLine(dicoPhone[phoneNumber]);
+        }
+
+        public bool AddPhoneNumber(string phoneNumber, string name)
+        {
+            if (!IsValidPhoneNumber(phoneNumber))
+            {
+                return false;
+            }
+            else
+            {
+                dicoPhone.Add(phoneNumber, name);
+                return true;
+            }
+        }
+
+        public bool DeletePhoneNumber(string phoneNumber)
+        {
+            return dicoPhone.Remove(phoneNumber);
+        }
+
+        public void DisplayPhoneBook()
+        {
+            if (dicoPhone.Count == 0)
+            {
+                Console.WriteLine("Pas de numéros téléponiques");
+            }
+            else
+            {
+                Console.WriteLine("Annuaire téléphonique :");
+                Console.WriteLine("-----------------------");
+
+                foreach (var obj in dicoPhone)
+                {
+                    Console.WriteLine($"{obj.Key} : {obj.Value}");
+                }
+
+                Console.WriteLine("-----------------------");
             }
         }
     }
