@@ -232,25 +232,25 @@ namespace Semaine1
             // Percolation
             Console.WriteLine();
             Console.WriteLine("=== Percolation ===");
-
             bool[][] open =
             {
-                new bool[] { true, false, true, true, true, true, },
-                new bool[] { true, false, false, true, false, false, },
-                new bool[] { false, false, false, true, false, false, },
-                new bool[] { false, false, true, true, true, false, },
-                new bool[] { true, true, false, true, true, false, },
-                new bool[] { true, true, false, true, false, false, }
+                new bool[] { true, false, true, true, true, true },
+                new bool[] { true, false, false, true, false, false },
+                new bool[] { false, false, false, true, false, false },
+                new bool[] { false, false, true, true, true, false },
+                new bool[] { true, true, false, true, true, false },
+                new bool[] { true, true, false, true, false, false }
             };
             bool[][] full =
             {
-                new bool[] { true, false, true, true, true, true, },
-                new bool[] { true, false, false, true, false, false, },
-                new bool[] { false, false, false, true, false, false, },
-                new bool[] { false, false, true, true, true, false, },
-                new bool[] { false, false, false, true, true, false, },
-                new bool[] { false, false, false, true, false, false, }
+                new bool[] { true, false, true, true, true, true },
+                new bool[] { true, false, false, true, false, false },
+                new bool[] { false, false, false, true, false, false },
+                new bool[] { false, false, true, true, true, false },
+                new bool[] { false, false, false, true, true, false },
+                new bool[] { false, false, false, true, false, false }
             };
+
 
             Percolation perco = new Percolation(new Percolation.Perco(open, full));
             Console.WriteLine(perco.Percolate());
@@ -261,6 +261,11 @@ namespace Semaine1
             {
                 Console.WriteLine($"x: {pos.Key} , y: {pos.Value}");
             }
+
+            Console.WriteLine(perco.PercolationValue(6));
+
+            Percolation.PclData pclRes = perco.MeanPercolationValue(6, 1000);
+            Console.WriteLine($"mean: {pclRes.mean}, std: {pclRes.std}");
 
             Console.ReadKey();
         }
