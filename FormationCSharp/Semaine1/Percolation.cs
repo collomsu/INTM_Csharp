@@ -93,5 +93,7 @@ namespace Semaine1
 
             return poss;
         }
+
+
     }
 }
