@@ -12,6 +12,8 @@ namespace Semaine1
     {
         static void Main(string[] args)
         {
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
+
             // Serie 1
             // Exercice 1
             BasicOperation(1, 2, '+');
@@ -266,6 +268,49 @@ namespace Semaine1
 
             Percolation.PclData pclRes = perco.MeanPercolationValue(6, 1000);
             Console.WriteLine($"mean: {pclRes.mean}, std: {pclRes.std}");
+
+            // Labyrinthe
+            Console.WriteLine();
+            Console.WriteLine("=== Labyrinthe ===");
+
+            Labyrinthe.Cell cellIn = new Labyrinthe.Cell(false, false, false, false, false, Labyrinthe.Status.Entree);
+            Labyrinthe.Cell cellOut = new Labyrinthe.Cell(false, false, false, false, false, Labyrinthe.Status.Sortie);
+            Labyrinthe.Cell cell = new Labyrinthe.Cell(false, false, false, false, false, Labyrinthe.Status.Simple);
+            Labyrinthe.Cell cellOpen = new Labyrinthe.Cell(true, true, true, true, false, Labyrinthe.Status.Simple);
+
+            Labyrinthe.Cell[][] maze =
+            {
+                new Labyrinthe.Cell[] {cellIn, cell , cell, cell, cell, cell, cell, cell, cell, cell },
+                new Labyrinthe.Cell[] {cell, cellOpen, cell, cell, cell, cell, cell, cell, cell, cell },
+                new Labyrinthe.Cell[] {cell, cell, cell, cell, cell, cell, cell, cell, cell, cell },
+                new Labyrinthe.Cell[] {cell, cell, cell, cell, cell, cell, cell, cell, cell, cell },
+                new Labyrinthe.Cell[] {cell, cell, cell, cell, cell, cell, cell, cell, cell, cell },
+                new Labyrinthe.Cell[] {cell, cell, cell, cell, cell, cell, cell, cell, cell, cell },
+                new Labyrinthe.Cell[] {cell, cell, cell, cell, cell, cell, cell, cell, cell, cell },
+                new Labyrinthe.Cell[] {cell, cell, cell, cell, cell, cell, cell, cell, cell, cell },
+                new Labyrinthe.Cell[] {cell, cell, cell, cell, cell, cell, cell, cell, cell, cell },
+                new Labyrinthe.Cell[] {cellOut, cell, cell, cell, cell, cell, cell, cell, cell, cell }
+            };
+
+            Labyrinthe laby = new Labyrinthe(maze);
+            Console.WriteLine(laby.IsOpen(0, 0, 2));
+            Console.WriteLine(laby.IsOpen(1, 1, 2));
+            Console.WriteLine(laby.IsMazeStart(0, 0));
+            Console.WriteLine(laby.IsMazeStart(0, 2));
+            Console.WriteLine(laby.IsMazeStart(1, 0));
+            Console.WriteLine(laby.IsMazeEnd(9, 0));
+            laby.Open(0, 2, 2);
+            Console.WriteLine(laby.IsOpen(0, 2, 2));
+
+            List<KeyValuePair<int, int>> labyNeighbors = laby.CloseNeighbors(9, 9);
+            foreach (var pos in labyNeighbors)
+            {
+                Console.WriteLine($"x: {pos.Key} , y: {pos.Value}");
+            }
+
+            Labyrinthe laby2 = new Labyrinthe();
+            Console.WriteLine(laby2.Generate());
+            laby2.DisplayLabyrinthe(laby2.Display());
 
             Console.ReadKey();
         }
