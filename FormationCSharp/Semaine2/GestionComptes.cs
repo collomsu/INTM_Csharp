@@ -59,8 +59,6 @@ namespace Semaine2
                 {
                     Console.WriteLine("Compte NON inséré : montant < 0");
                 }
-
-
             }
             fe.Close();
 

@@ -100,7 +100,7 @@ namespace Semaine2
                     break;
                 }
 
-                if (transaction.Expediteur.Numero != 0 && transaction.Destinataire != null && transaction.Expediteur.Numero == compte.Numero)
+                if (transaction.Expediteur != null && transaction.Destinataire != null && transaction.Expediteur.Numero == compte.Numero)
                 {
                     montant += transaction.Montant;
                 }
