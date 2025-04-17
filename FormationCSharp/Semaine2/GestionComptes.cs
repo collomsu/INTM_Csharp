@@ -49,10 +49,18 @@ namespace Semaine2
                     Console.WriteLine(values[1]);
                     solde = (int)Convert.ToDouble(values[1]);
                 }
-                AddCompte(new Compte(int.Parse(values[0]), solde));
 
-                Console.WriteLine("Compte inséré !");
-                Console.WriteLine(values.Length);
+                if (solde >= 0) {
+                    AddCompte(new Compte(int.Parse(values[0]), solde));
+                    Console.WriteLine("Compte inséré !");
+                    Console.WriteLine(values.Length);
+                }
+                else
+                {
+                    Console.WriteLine("Compte NON inséré : montant < 0");
+                }
+
+
             }
             fe.Close();
 

@@ -11,8 +11,8 @@ namespace Semaine2
     {
         static void Main(string[] args)
         {
-            string fInComptes = @"C:\Users\wksadmin\source\repos\collomsu\INTM_Csharp\FormationCSharp\Semaine2\comptes.csv";
-            string fInTransactions = @"C:\Users\wksadmin\source\repos\collomsu\INTM_Csharp\FormationCSharp\Semaine2\transactions.csv";
+            string fInComptes = @"C:\Users\wksadmin\source\repos\collomsu\INTM_Csharp\FormationCSharp\Semaine2\Comptes_1.txt";
+            string fInTransactions = @"C:\Users\wksadmin\source\repos\collomsu\INTM_Csharp\FormationCSharp\Semaine2\Transactions_1.txt";
             string fOutStatutTrans = @"C:\Users\wksadmin\source\repos\collomsu\INTM_Csharp\FormationCSharp\Semaine2\statutTransactions.csv";
 
             GestionComptes gc = new GestionComptes(fInComptes, fInTransactions, fOutStatutTrans);

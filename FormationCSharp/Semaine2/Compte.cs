@@ -138,7 +138,7 @@ namespace Semaine2
         /// <param name="numTransaction"></param>
         public static string DepotArgent(Compte cpt, float montant, int numTransaction)
         {
-            if (montant > 0)
+            if (montant > 0 && cpt != null)
             {
                 Transaction depot = new Transaction(numTransaction, null, cpt, montant);
                 cpt.UpdateSolde(montant);
@@ -147,7 +147,6 @@ namespace Semaine2
             }
             else
             {
-                Console.WriteLine("Erreur : " + montant + " non positif");
                 return "KO";
             }
         }
@@ -161,32 +160,22 @@ namespace Semaine2
         /// <param name="numTransaction"></param>
         public static string RetirerArgent(Compte cpt, float montant, int numTransaction)
         {
-            if (montant > 0)
+            if (montant > 0 && cpt != null && cpt.Solde > montant)
             {
-                if (cpt.Solde > montant)
+                if ((SommmeDixDernierVirement(cpt) + montant) <= 1000)
                 {
-                    if ((SommmeDixDernierVirement(cpt) + montant) <= 1000)
-                    {
-                        Transaction retrait = new Transaction(numTransaction, cpt, null, montant);
-                        cpt.UpdateSolde(-montant);
-                        cpt.AddTransaction(retrait);
-                        return "OK";
-                    }
-                    else
-                    {
-                        Console.WriteLine("Erreur : " + montant + " ferait dépasser la somme maximale pouvant être retirer");
-                        return "KO";
-                    }
+                    Transaction retrait = new Transaction(numTransaction, cpt, null, montant);
+                    cpt.UpdateSolde(-montant);
+                    cpt.AddTransaction(retrait);
+                    return "OK";
                 }
                 else
                 {
-                    Console.WriteLine("Erreur : " + montant + " superieur au solde du compte");
                     return "KO";
                 }
             }
             else
             {
-                Console.WriteLine("Erreur : " + montant + " non positif");
                 return "KO";
             }
         }
@@ -200,7 +189,7 @@ namespace Semaine2
         /// <param name="numTransaction"></param>
         public static string Virement(Compte cptExp, Compte cptDest, float montant, int numTransaction)
         {
-            if (DemandePrelevement(cptExp, montant))
+            if (cptExp != null && cptDest != null && DemandePrelevement(cptExp, montant))
             {
                 Transaction virement = new Transaction(numTransaction, cptExp, cptDest, montant);
                 cptDest.UpdateSolde(montant);
@@ -210,7 +199,6 @@ namespace Semaine2
             }
             else
             {
-                Console.WriteLine("Erreur : Lors du prélèvement sur le compte expéditeur.");
                 return "KO";
             }
         }
