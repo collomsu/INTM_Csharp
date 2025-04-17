@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,27 +12,41 @@ namespace Semaine2
     /// </summary>
     public class Transaction
     {
-        private int numero;
-        private Compte expediteur;
-        private Compte destinataire;
-        private float montant;
+        private int _numero;
+        private Compte _expediteur;
+        private Compte _destinataire;
+        private float _montant;
 
         public Transaction(int numero, Compte expediteur, Compte destinataire, float montant)
         {
-            this.numero = numero;
-            this.expediteur = expediteur;
-            this.destinataire = destinataire;
-            this.montant = montant;
+            this._numero = numero;
+            this._expediteur = expediteur;
+            this._destinataire = destinataire;
+            this._montant = montant;
         }
 
-        public int getNumero() { return numero; }
-        public Compte getExpediteur() { return expediteur; }
-        public Compte getDestinataire() { return destinataire; }
-        public float getMontant() { return montant; }
+        public int Numero
+        {
+            get => _numero;
+            set => _numero = value;
+        }
 
-        public void setNumero(int numero) { this.numero = numero; }
-        public void setExpediteur(Compte expediteur) { this.expediteur = expediteur; }
-        public void setDestinataire(Compte destinataire) { this.destinataire = destinataire; }
-        public void setMontant(float montant) { this.montant = montant; }
+        public Compte Expediteur
+        {
+            get => _expediteur;
+            set => _expediteur = value;
+        }
+
+        public Compte Destinataire
+        {
+            get => _destinataire;
+            set => _destinataire = value;
+        }
+
+        public float Montant
+        {
+            get => _montant;
+            set => _montant = value;
+        }
     }
 }

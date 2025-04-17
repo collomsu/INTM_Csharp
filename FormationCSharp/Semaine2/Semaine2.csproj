@@ -44,8 +44,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
-	<Compile Include="Compte.cs" />
+	<Compile Include="GestionComptes.cs" />
+    <Compile Include="Compte.cs" />
 	<Compile Include="Transaction.cs" />
+	<Compile Include="FichierEntree.cs" />
+	<Compile Include="FichierSortie.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

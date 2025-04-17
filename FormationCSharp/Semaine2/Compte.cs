@@ -11,59 +11,205 @@ namespace Semaine2
     /// </summary>
     public class Compte
     {
-        private int numero;
-        private float solde;
-        private float retrait_max;
-        private List<Transaction> transactions;
+        private int _numero;
+        private float _solde;
+        private float _retraitMax;
+        private List<Transaction> _transactions;
 
         public Compte()
         {
-            numero = 0;
-            solde = 0;
-            retrait_max = 1000;
-            transactions = new List<Transaction>();
+            _numero = 0;
+            _solde = 0;
+            _retraitMax = 1000;
+            _transactions = new List<Transaction>();
         }
 
         public Compte(int numero, float solde)
         {
-            this.numero = numero;
-            this.solde = solde;
-            retrait_max = 1000;
-            transactions = new List<Transaction>();
+            this._numero = numero;
+            this._solde = solde;
+            this._retraitMax = 1000;
+            this._transactions = new List<Transaction>();
         }
 
-        public Compte(int numero, float solde, float retrait_max, List<Transaction> transactions)
+        public Compte(int numero, float solde, float retraitMax) : this(numero, solde)
         {
-            this.numero = numero;
-            this.solde = solde;
-            this.retrait_max = retrait_max;
-            this.transactions = transactions;
+            this._retraitMax = retraitMax;
+            this._transactions = new List<Transaction>();
         }
 
+        public Compte(int numero, float solde, float retraitMax, List<Transaction> transactions) : this(numero, solde, retraitMax)
+        {
+            this._retraitMax = retraitMax;
+            this._transactions = transactions;
+        }
 
-        public int GetNumero() { return numero; }
-        public float GetSolde() { return solde; }
-        public float GetRetraitMax() { return retrait_max; }
-        public List<Transaction> GetTransactions() { return transactions; }
+        public float Solde
+        {
+            get => _solde;
+            set => _solde = value;
+        }
 
-        public void SetNumero(int numero) { this.numero = numero; }
-        public void SetSolde(float solde) { this.solde = solde; }
-        public void SetRetraitMax(float retrait_max) { this.retrait_max = retrait_max; }
+        public int Numero
+        {
+            get => _numero;
+            set => _numero = value;
+        }
+
+        public float RetraitMax
+        {
+            get => _retraitMax;
+            set => _retraitMax = value;
+        }
+
+        public List<Transaction> Transactions
+        {
+            get => _transactions;
+            set => _transactions = value;
+        }
 
         public void AddTransaction(Transaction tx)
         {
-            this.transactions.Add(tx);
+            this._transactions.Add(tx);
         }
 
         public void RemoveTransaction(Transaction tx)
         {
-            this.transactions.Remove(tx);
+            this._transactions.Remove(tx);
         }
 
         public void UpdateSolde(float montant)
         {
-            this.solde += montant;
+            this._solde += montant;
         }
 
+        /// <summary>
+        /// Retourne la somme des 10 derniers virements effectué par le compte passé en paramètre.
+        /// </summary>
+        /// <param name="compte"></param>
+        /// <returns>float</returns>
+        static float SommmeDixDernierVirement(Compte compte)
+        {
+            int nb_transactions = 0;
+            float montant = 0;
+            foreach (var transaction in compte.Transactions)
+            {
+                nb_transactions++;
+                if (nb_transactions > 10)
+                {
+                    break;
+                }
+
+                if (transaction.Expediteur.Numero != 0 && transaction.Destinataire != null && transaction.Expediteur.Numero == compte.Numero)
+                {
+                    montant += transaction.Montant;
+                }
+            };
+
+            return montant;
+        }
+
+        /// <summary>
+        /// Réalise la demande de prélèvement et si celle-ci est possible, l'effectue et renvoie l'état de l'opération
+        /// true si prélèvement effectué, false s'il n'a pas pu avoir lieu.
+        /// </summary>
+        /// <param name="compte"></param>
+        /// <param name="montant"></param>
+        /// <returns>bool</returns>
+        public static bool DemandePrelevement(Compte compte, float montant)
+        {
+            if (montant > 0 && compte.Solde > montant && (SommmeDixDernierVirement(compte) + montant) <= 1000)
+            {
+                compte.UpdateSolde(-montant);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Traite l'opération du dépot d'argent sur un compte à partir du numéro de compte et du montant à .
+        /// Le montant doit etre positif.
+        /// </summary>
+        /// <param name="numero_cpt"></param>
+        /// <param name="montant"></param>
+        public static string DepotArgent(Compte cpt, float montant, int numTransaction)
+        {
+            if (montant > 0)
+            {
+                Transaction depot = new Transaction(numTransaction, null, cpt, montant);
+                cpt.UpdateSolde(montant);
+                cpt.AddTransaction(depot);
+                return "OK";
+            }
+            else
+            {
+                Console.WriteLine("Erreur : " + montant + " non positif");
+                return "KO";
+            }
+        }
+
+        /// <summary>
+        /// Traite l'opération de retrait d'argent sur un compte à partir du numéro de compte et du montant à retirer.
+        /// Le montant doit etre positif et inférieur au solde du compte à retirer.
+        /// </summary>
+        /// <param name="numero_cpt"></param>
+        /// <param name="montant"></param>
+        public static string RetirerArgent(Compte cpt, float montant, int numTransaction)
+        {
+            if (montant > 0)
+            {
+                if (cpt.Solde > montant)
+                {
+                    if ((SommmeDixDernierVirement(cpt) + montant) <= 1000)
+                    {
+                        Transaction retrait = new Transaction(numTransaction, cpt, null, montant);
+                        cpt.UpdateSolde(-montant);
+                        cpt.AddTransaction(retrait);
+                        return "OK";
+                    }
+                    else
+                    {
+                        Console.WriteLine("Erreur : " + montant + " ferait dépasser la somme maximale pouvant être retirer");
+                        return "KO";
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Erreur : " + montant + " superieur au solde du compte");
+                    return "KO";
+                }
+            }
+            else
+            {
+                Console.WriteLine("Erreur : " + montant + " non positif");
+                return "KO";
+            }
+        }
+
+        /// <summary>
+        /// Traite l'opération de virement entre deux compte d'un montant défini devant être positif.
+        /// </summary>
+        /// <param name="numero_cpt_exp"></param>
+        /// <param name="numero_cpt_dest"></param>
+        /// <param name="montant"></param>
+        public static string Virement(Compte cptExp, Compte cptDest, float montant, int numTransaction)
+        {
+            if (DemandePrelevement(cptExp, montant))
+            {
+                Transaction virement = new Transaction(numTransaction, cptExp, cptDest, montant);
+                cptDest.UpdateSolde(montant);
+                cptExp.AddTransaction(virement);
+                cptDest.AddTransaction(virement);
+                return "OK";
+            }
+            else
+            {
+                Console.WriteLine("Erreur : Lors du prélèvement sur le compte expéditeur.");
+                return "KO";
+            }
+        }
     }
 }
