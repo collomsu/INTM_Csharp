@@ -30,7 +30,7 @@ namespace Semaine2
         }
 
         /// <summary>
-        /// Prend en entrée un fichier CSV des comptes à ajouter
+        /// Traite un fichier CSV d'entrée des comptes à ajouter
         /// Format d'entrée : numcpt;solde
         /// </summary>
         public void TraiterCompteEntree()
@@ -60,7 +60,7 @@ namespace Semaine2
         }
 
         /// <summary>
-        /// Prend en entrée un fichier CSV des transactions a traiter.
+        /// Traite un fichier CSV d'entrée des transactions a traiter, et affiche le resultats des transactions traitées dans un fichier CSV de sortie.
         /// Format d'entrée : numtransac;montant;cptexp;cptdest
         /// </summary>
         public void TraiterTransactionEntree()

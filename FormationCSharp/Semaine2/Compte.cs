@@ -133,8 +133,9 @@ namespace Semaine2
         /// Traite l'opération du dépot d'argent sur un compte à partir du numéro de compte et du montant à .
         /// Le montant doit etre positif.
         /// </summary>
-        /// <param name="numero_cpt"></param>
+        /// <param name="cpt"></param>
         /// <param name="montant"></param>
+        /// <param name="numTransaction"></param>
         public static string DepotArgent(Compte cpt, float montant, int numTransaction)
         {
             if (montant > 0)
@@ -155,8 +156,9 @@ namespace Semaine2
         /// Traite l'opération de retrait d'argent sur un compte à partir du numéro de compte et du montant à retirer.
         /// Le montant doit etre positif et inférieur au solde du compte à retirer.
         /// </summary>
-        /// <param name="numero_cpt"></param>
+        /// <param name="cpt"></param>
         /// <param name="montant"></param>
+        /// <param name="numTransaction"></param>
         public static string RetirerArgent(Compte cpt, float montant, int numTransaction)
         {
             if (montant > 0)
@@ -192,9 +194,10 @@ namespace Semaine2
         /// <summary>
         /// Traite l'opération de virement entre deux compte d'un montant défini devant être positif.
         /// </summary>
-        /// <param name="numero_cpt_exp"></param>
-        /// <param name="numero_cpt_dest"></param>
+        /// <param name="cptExp"></param>
+        /// <param name="cptDest"></param>
         /// <param name="montant"></param>
+        /// <param name="numTransaction"></param>
         public static string Virement(Compte cptExp, Compte cptDest, float montant, int numTransaction)
         {
             if (DemandePrelevement(cptExp, montant))
