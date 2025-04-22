@@ -91,6 +91,7 @@ namespace Semaine2
         static float SommmeDixDernierVirement(Compte compte)
         {
             int nb_transactions = 0;
+            // pk float et pas décimal pour les valeurs monétaires ? 
             float montant = 0;
             foreach (var transaction in compte.Transactions)
             {

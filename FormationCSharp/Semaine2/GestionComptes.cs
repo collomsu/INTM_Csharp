@@ -35,7 +35,10 @@ namespace Semaine2
         /// </summary>
         public void TraiterCompteEntree()
         {
+            // Vérifier si le fichier existe serait une bonne idée 
             FichierEntree fe = new FichierEntree(_pathComptes, System.IO.FileMode.Open);
+            // Pas mal, je te conseille l'utilisation de using ou de mettre ta lecture dans un bloc try catch finally
+            // pour toujours libérer les ressources 
             fe.Open();
             while (!fe.EndOfStream())
             {
@@ -47,10 +50,11 @@ namespace Semaine2
                 if (values.Length > 1 && !String.IsNullOrEmpty(values[1]))
                 {
                     Console.WriteLine(values[1]);
-                    solde = (int)Convert.ToDouble(values[1]);
+                    solde = (int)Convert.ToDouble(values[1]); // Pk tu fais un cast vers un int si tu as un float ? 
                 }
 
                 if (solde >= 0) {
+                    // Dangereux, toujours vérifier les valeurs d'entrée
                     AddCompte(new Compte(int.Parse(values[0]), solde));
                     Console.WriteLine("Compte inséré !");
                     Console.WriteLine(values.Length);
@@ -77,7 +81,7 @@ namespace Semaine2
             fs.Open();
 
             string codeRetour = "";
-
+            // Même remarque que pour la lecture des comptes 
             while (!fe.EndOfStream())
             {
                 var line = fe.ReadLine();
@@ -85,6 +89,7 @@ namespace Semaine2
 
                 int num_transaction = int.Parse(values[0]);
                 float montant_transaction = (int)Convert.ToDouble(values[1]);
+                // reste dangereux, on aura tendance à privilégier les TryParse - mais OK 
                 int cpt_exp = int.Parse(values[2]);
                 int cpt_dest = int.Parse(values[3]);
 
