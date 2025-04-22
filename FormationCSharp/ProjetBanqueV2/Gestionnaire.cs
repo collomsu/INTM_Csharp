@@ -69,7 +69,7 @@ namespace ProjetBanqueV2
         /// <param name="retraitMax"></param>
         /// <param name="date"></param>
         /// <returns></returns>
-        public string CreateCompte(int numero, float solde, DateTime dateCrea, DateTime dateResi = default(DateTime))
+        public string CreateCompte(int numero, decimal solde, DateTime dateCrea, DateTime dateResi = default(DateTime))
         {
             if (GestionComptes.SearchCompte(_comptes, numero) == null && solde >= 0)
             {

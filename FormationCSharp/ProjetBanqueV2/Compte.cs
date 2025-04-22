@@ -12,8 +12,8 @@ namespace ProjetBanqueV2
     public class Compte
     {
         private int _numero;
-        private float _solde;
-        private float _retraitMax;
+        private decimal _solde;
+        private decimal _retraitMax;
         private List<Transaction> _transactions;
         private DateTime _dateCreation;
         private DateTime _dateResiliation;
@@ -26,7 +26,7 @@ namespace ProjetBanqueV2
             _transactions = new List<Transaction>();
         }
 
-        public Compte(int numero, float solde)
+        public Compte(int numero, decimal solde)
         {
             this._numero = numero;
             this._solde = solde;
@@ -34,30 +34,30 @@ namespace ProjetBanqueV2
             this._transactions = new List<Transaction>();
         }
 
-        public Compte(int numero, float solde, float retraitMax) : this(numero, solde)
+        public Compte(int numero, decimal solde, decimal retraitMax) : this(numero, solde)
         {
             this._retraitMax = retraitMax;
             this._transactions = new List<Transaction>();
         }
 
-        public Compte(int numero, float solde, float retraitMax, List<Transaction> transactions) : this(numero, solde, retraitMax)
+        public Compte(int numero, decimal solde, decimal retraitMax, List<Transaction> transactions) : this(numero, solde, retraitMax)
         {
             this._retraitMax = retraitMax;
             this._transactions = transactions;
         }
 
-        public Compte(int numero, float solde, float retraitMax, List<Transaction> transactions, DateTime dateCreation) : this(numero, solde, retraitMax, transactions)
+        public Compte(int numero, decimal solde, decimal retraitMax, List<Transaction> transactions, DateTime dateCreation) : this(numero, solde, retraitMax, transactions)
         {
             this._dateCreation = dateCreation;
         }
 
-        public Compte(int numero, float solde, float retraitMax, DateTime dateCreation, DateTime dateResiliation) : this(numero, solde, retraitMax)
+        public Compte(int numero, decimal solde, decimal retraitMax, DateTime dateCreation, DateTime dateResiliation) : this(numero, solde, retraitMax)
         {
             this._dateCreation = dateCreation;
             this._dateResiliation = dateResiliation;
         }
 
-        public float Solde
+        public decimal Solde
         {
             get => _solde;
             set => _solde = value;
@@ -69,7 +69,7 @@ namespace ProjetBanqueV2
             set => _numero = value;
         }
 
-        public float RetraitMax
+        public decimal RetraitMax
         {
             get => _retraitMax;
             set => _retraitMax = value;
@@ -103,7 +103,7 @@ namespace ProjetBanqueV2
             this._transactions.Remove(tx);
         }
 
-        public void UpdateSolde(float montant)
+        public void UpdateSolde(decimal montant)
         {
             this._solde += montant;
         }
@@ -112,11 +112,11 @@ namespace ProjetBanqueV2
         /// Retourne la somme des 10 derniers virements effectué par le compte passé en paramètre.
         /// </summary>
         /// <param name="compte"></param>
-        /// <returns>float</returns>
-        static float SommmeDixDernierVirement(Compte compte)
+        /// <returns>decimal</returns>
+        static decimal SommmeDixDernierVirement(Compte compte)
         {
             int nb_transactions = 0;
-            float montant = 0;
+            decimal montant = 0;
             foreach (var transaction in compte.Transactions)
             {
                 nb_transactions++;
@@ -141,7 +141,7 @@ namespace ProjetBanqueV2
         /// <param name="compte"></param>
         /// <param name="montant"></param>
         /// <returns>bool</returns>
-        public static bool DemandePrelevement(Compte compte, float montant)
+        public static bool DemandePrelevement(Compte compte, decimal montant)
         {
             if (montant > 0 && compte.Solde > montant && (SommmeDixDernierVirement(compte) + montant) <= 1000)
             {
@@ -161,7 +161,7 @@ namespace ProjetBanqueV2
         /// <param name="cpt"></param>
         /// <param name="montant"></param>
         /// <param name="numTransaction"></param>
-        public static string DepotArgent(Compte cpt, float montant, int numTransaction)
+        public static string DepotArgent(Compte cpt, decimal montant, int numTransaction)
         {
             if (montant > 0 && cpt != null)
             {
@@ -183,7 +183,7 @@ namespace ProjetBanqueV2
         /// <param name="cpt"></param>
         /// <param name="montant"></param>
         /// <param name="numTransaction"></param>
-        public static string RetirerArgent(Compte cpt, float montant, int numTransaction)
+        public static string RetirerArgent(Compte cpt, decimal montant, int numTransaction)
         {
             if (montant > 0 && cpt != null && cpt.Solde > montant)
             {
@@ -212,7 +212,7 @@ namespace ProjetBanqueV2
         /// <param name="cptDest"></param>
         /// <param name="montant"></param>
         /// <param name="numTransaction"></param>
-        public static string Virement(Compte cptExp, Compte cptDest, float montant, int numTransaction)
+        public static string Virement(Compte cptExp, Compte cptDest, decimal montant, int numTransaction)
         {
             if (cptExp != null && cptDest != null && DemandePrelevement(cptExp, montant))
             {

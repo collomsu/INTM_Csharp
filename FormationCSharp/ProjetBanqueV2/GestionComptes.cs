@@ -51,7 +51,7 @@ namespace ProjetBanqueV2
             string codeRetour;
             int idCpt;
             string idStr, dateStr, soldeStr, entreeStr, sortieStr;
-            float solde;
+            decimal solde;
 
             while (!fe.EndOfStream())
             {
@@ -92,7 +92,7 @@ namespace ProjetBanqueV2
 
                     if (!String.IsNullOrEmpty(values[2]))
                     {
-                        if (!float.TryParse(values[2], out solde))
+                        if (!decimal.TryParse(values[2], out solde))
                         {
                             throw new Exception("Formatage du solde incorrect.");
                         }
@@ -204,7 +204,7 @@ namespace ProjetBanqueV2
             string codeRetour, idStr, dateStr, montantStr, expStr, destStr;
 
             int idTrans, idExp, idDest;
-            float montant;
+            decimal montant;
 
             while (!fe.EndOfStream())
             {
@@ -243,7 +243,7 @@ namespace ProjetBanqueV2
                         throw new Exception("Conversion de la date impossible.");
                     }
 
-                    if (!float.TryParse(montantStr, out montant))
+                    if (!decimal.TryParse(montantStr, out montant))
                     {
                         throw new Exception("Formatage du montant incorrect.");
                     }

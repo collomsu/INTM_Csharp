@@ -15,9 +15,9 @@ namespace ProjetBanqueV2
         private int _numero;
         private Compte _expediteur;
         private Compte _destinataire;
-        private float _montant;
+        private decimal _montant;
 
-        public Transaction(int numero, Compte expediteur, Compte destinataire, float montant)
+        public Transaction(int numero, Compte expediteur, Compte destinataire, decimal montant)
         {
             this._numero = numero;
             this._expediteur = expediteur;
@@ -43,7 +43,7 @@ namespace ProjetBanqueV2
             set => _destinataire = value;
         }
 
-        public float Montant
+        public decimal Montant
         {
             get => _montant;
             set => _montant = value;
