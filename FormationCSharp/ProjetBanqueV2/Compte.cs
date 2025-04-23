@@ -161,11 +161,11 @@ namespace ProjetBanqueV2
         /// <param name="cpt"></param>
         /// <param name="montant"></param>
         /// <param name="numTransaction"></param>
-        public static string DepotArgent(Compte cpt, decimal montant, int numTransaction)
+        public static string DepotArgent(Compte cpt, decimal montant, int numTransaction, DateTime date)
         {
             if (montant > 0 && cpt != null)
             {
-                Transaction depot = new Transaction(numTransaction, null, cpt, montant);
+                Transaction depot = new Transaction(numTransaction, null, cpt, montant, date);
                 cpt.UpdateSolde(montant);
                 cpt.AddTransaction(depot);
                 return "OK";
@@ -183,21 +183,14 @@ namespace ProjetBanqueV2
         /// <param name="cpt"></param>
         /// <param name="montant"></param>
         /// <param name="numTransaction"></param>
-        public static string RetirerArgent(Compte cpt, decimal montant, int numTransaction)
+        public static string RetirerArgent(Compte cpt, decimal montant, int numTransaction, DateTime date)
         {
             if (montant > 0 && cpt != null && cpt.Solde > montant)
             {
-                if ((SommmeDixDernierVirement(cpt) + montant) <= 1000)
-                {
-                    Transaction retrait = new Transaction(numTransaction, cpt, null, montant);
-                    cpt.UpdateSolde(-montant);
-                    cpt.AddTransaction(retrait);
-                    return "OK";
-                }
-                else
-                {
-                    return "KO";
-                }
+                Transaction retrait = new Transaction(numTransaction, cpt, null, montant, date);
+                cpt.UpdateSolde(-montant);
+                cpt.AddTransaction(retrait);
+                return "OK";
             }
             else
             {
@@ -212,11 +205,11 @@ namespace ProjetBanqueV2
         /// <param name="cptDest"></param>
         /// <param name="montant"></param>
         /// <param name="numTransaction"></param>
-        public static string Virement(Compte cptExp, Compte cptDest, decimal montant, int numTransaction)
+        public static string Virement(Compte cptExp, Compte cptDest, decimal montant, int numTransaction, DateTime date)
         {
             if (cptExp != null && cptDest != null && DemandePrelevement(cptExp, montant))
             {
-                Transaction virement = new Transaction(numTransaction, cptExp, cptDest, montant);
+                Transaction virement = new Transaction(numTransaction, cptExp, cptDest, montant, date);
                 cptDest.UpdateSolde(montant);
                 cptExp.AddTransaction(virement);
                 cptDest.AddTransaction(virement);

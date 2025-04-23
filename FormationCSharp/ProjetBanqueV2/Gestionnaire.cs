@@ -16,6 +16,7 @@ namespace ProjetBanqueV2
         private TypeGestionnaire _type;
         private int _nbrTransactions;
         private List<Compte> _comptes;
+        private decimal _fraisTotaux;
 
         public Gestionnaire(int numero, TypeGestionnaire type, int nbrTransactions)
         {
@@ -23,6 +24,7 @@ namespace ProjetBanqueV2
             _type = type;
             _nbrTransactions = nbrTransactions;
             _comptes = new List<Compte>();
+            _fraisTotaux = 0;
         }
 
         public int Numero
@@ -46,6 +48,17 @@ namespace ProjetBanqueV2
         public List<Compte> Comptes
         {
             get => _comptes;
+        }
+
+        public decimal FraisTotaux
+        {
+            get => _fraisTotaux;
+            set => _fraisTotaux = value;
+        }
+
+        public void UpdateFraisTotaux(decimal frais)
+        {
+            _fraisTotaux += frais;
         }
 
         public string AddCompte(Compte cpt)
@@ -143,6 +156,52 @@ namespace ProjetBanqueV2
             {
                 return "KO";
             }
+        }
+
+        public string AutoriseTransaction(Compte cpt, DateTime dt, decimal montant)
+        {
+            decimal montantTransactions = montant;
+            int nbTransTraite = 0;
+
+            if (NbrTransactions != 0)
+            {
+                for (int i = cpt.Transactions.Count - 1; i >= 0; i--)
+                {
+                    if (cpt.Transactions[i].Expediteur != null && cpt.Transactions[i].Expediteur.Numero == cpt.Numero)
+                    {
+                        nbTransTraite++;
+                        montantTransactions += cpt.Transactions[i].Montant;
+                    }
+
+                    if (nbTransTraite >= NbrTransactions)
+                    {
+                        break;
+                    }
+                }
+
+                if (montantTransactions > 1000)
+                {
+                    return "KO";
+                }
+            }
+
+            montantTransactions = montant;
+
+            foreach (Transaction t in cpt.Transactions)
+            {
+                if (t.Expediteur != null && t.Expediteur.Numero == cpt.Numero && (dt - t.Date).Days < 7)
+                {
+                    montantTransactions += t.Montant;
+                }
+            }
+
+            if (montantTransactions > 2000)
+            {
+                Console.WriteLine("trop de moula consommé");
+                return "KO";
+            }
+
+            return "OK";
         }
     }
 }

@@ -16,13 +16,15 @@ namespace ProjetBanqueV2
         private Compte _expediteur;
         private Compte _destinataire;
         private decimal _montant;
+        private DateTime _date;
 
-        public Transaction(int numero, Compte expediteur, Compte destinataire, decimal montant)
+        public Transaction(int numero, Compte expediteur, Compte destinataire, decimal montant, DateTime date)
         {
             this._numero = numero;
             this._expediteur = expediteur;
             this._destinataire = destinataire;
             this._montant = montant;
+            this._date = date;
         }
 
         public int Numero
@@ -47,6 +49,12 @@ namespace ProjetBanqueV2
         {
             get => _montant;
             set => _montant = value;
+        }
+
+        public DateTime Date
+        {
+            get => _date;
+            set => _date = value;
         }
     }
 }

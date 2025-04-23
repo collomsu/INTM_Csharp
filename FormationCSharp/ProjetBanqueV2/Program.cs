@@ -24,6 +24,8 @@ namespace ProjetBanqueV2
             gc.TraiterCompteEntree();
             gc.TraiterTransactionEntree();
 
+            gc.TraitementMetrologie();
+
             Console.ReadKey();
         }
     }

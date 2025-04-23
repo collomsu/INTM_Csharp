@@ -14,8 +14,7 @@ namespace ProjetBanqueV2
         private string _pathStatutsTransations;
         private string _pathStatusOperations;
         private string _pathMetrologie;
-        
-
+        private int _nbTransactions;
         public GestionComptes(string pathComptes, string pathTransactions, string pathGestionnaires, string pathStatutsTransations, string pathStatusOperations, string pathMetrologie)
         {
             this._pathComptes = pathComptes;
@@ -25,6 +24,7 @@ namespace ProjetBanqueV2
             this._pathStatusOperations = pathStatusOperations;
             this._pathMetrologie = pathMetrologie;
             this._gestionnaires = new List<Gestionnaire>();
+            this._nbTransactions = 0;
         }
 
         public void AddGestionnaire(Gestionnaire ges)
@@ -63,6 +63,8 @@ namespace ProjetBanqueV2
                 soldeStr = "";
                 entreeStr = "";
                 sortieStr = "";
+
+                _nbTransactions++;
 
                 try
                 {
@@ -263,6 +265,8 @@ namespace ProjetBanqueV2
                         throw new Exception("Formatage du destinataire incorrect.");
                     }
 
+                    Gestionnaire gesExp;
+                    Gestionnaire gesDest;
                     Compte cptExp;
                     Compte cptDest;
 
@@ -280,6 +284,8 @@ namespace ProjetBanqueV2
                                 throw new Exception("Le compte expediteurs est inconnu.");
                             }
 
+                            gesExp = SearchGestionnaireByCompte(_gestionnaires, cptExp);
+
                             if (DateTime.Compare(dt, cptExp.DateCreation) < 0)
                             {
                                 throw new Exception("La date d'effet de la transaction opère avant la création du compte cible.");
@@ -290,7 +296,12 @@ namespace ProjetBanqueV2
                                 throw new Exception("La date d'effet de la transaction opère après la résiliation du compte cible.");
                             }
 
-                            codeRetour = Compte.RetirerArgent(cptExp, montant, idTrans);
+                            if (gesExp.AutoriseTransaction(cptExp, dt, montant) == "KO")
+                            {
+                                throw new Exception("La transaction a été refusé par le gestionnaire.");
+                            }
+
+                            codeRetour = Compte.RetirerArgent(cptExp, montant, idTrans, dt);
 
                             if (codeRetour == "KO")
                             {
@@ -315,7 +326,7 @@ namespace ProjetBanqueV2
                                 throw new Exception("La date d'effet de la transaction opère après la résiliation du compte cible.");
                             }
 
-                            codeRetour = Compte.DepotArgent(cptDest, montant, idTrans);
+                            codeRetour = Compte.DepotArgent(cptDest, montant, idTrans, dt);
 
                             if (codeRetour == "KO")
                             {
@@ -330,6 +341,9 @@ namespace ProjetBanqueV2
                             {
                                 throw new Exception("L'un des compte expediteur ou destinataire est inconnu.");
                             }
+
+                            gesExp = SearchGestionnaireByCompte(_gestionnaires, cptExp);
+                            gesDest = SearchGestionnaireByCompte(_gestionnaires, cptDest);
 
                             if (DateTime.Compare(dt, cptExp.DateCreation) < 0)
                             {
@@ -351,12 +365,40 @@ namespace ProjetBanqueV2
                                 throw new Exception("La date d'effet de la transaction opère après la résiliation du compte destinataire.");
                             }
 
-                            codeRetour = Compte.Virement(cptExp, cptDest, montant, idTrans);
+                            if (gesExp.AutoriseTransaction(cptExp, dt, montant) == "KO")
+                            {
+                                throw new Exception("La transaction a été refusé par le gestionnaire.");
+                            }
+
+                            if (gesExp.Numero == gesDest.Numero)
+                            {
+                                Console.WriteLine("ICI");
+                                codeRetour = Compte.Virement(cptExp, cptDest, montant, idTrans, dt);
+                            }
+                            else if (gesExp.Type == Gestionnaire.TypeGestionnaire.Particulier)
+                            {
+                                codeRetour = Compte.Virement(cptExp, cptDest, (montant * 0.99m), idTrans, dt);
+                                if (codeRetour == "OK")
+                                {
+                                    gesExp.UpdateFraisTotaux(montant * 0.01m);
+                                    Console.WriteLine($"{gesExp.Numero} {montant * 0.01m}");
+                                }
+                            }
+                            else if (gesExp.Type == Gestionnaire.TypeGestionnaire.Entreprise)
+                            {
+                                codeRetour = Compte.Virement(cptExp, cptDest, (montant - 10), idTrans, dt);
+                                if (codeRetour == "OK")
+                                {
+                                    Console.WriteLine("ICI le 2");
+                                    gesExp.UpdateFraisTotaux(10);
+                                }
+                            }
 
                             if (codeRetour == "KO")
                             {
                                 throw new Exception("Le virement a échoué.");
                             }
+
                             break;
                         default:
                             throw new Exception("Aucun des destinataires et expediteurs n'est différent de 0.");
@@ -508,6 +550,20 @@ namespace ProjetBanqueV2
             return compteTrouve;
         }
 
+        public static Gestionnaire SearchGestionnaireByCompte(List<Gestionnaire> lges, Compte cpt)
+        {
+            Gestionnaire gesFound = null;
+            lges.ForEach(ges =>
+            {
+                if (cpt == SearchCompte(ges.Comptes, cpt.Numero))
+                {
+                    gesFound = ges;
+                    return;
+                }
+            });
+            return gesFound;
+        }
+
         public String GetAllSoldesComptes()
         {
             string soldes = "";
@@ -542,6 +598,52 @@ namespace ProjetBanqueV2
                 Console.WriteLine($"Format de la date incorrect : {e}");
             }
             return dt;
+        }
+
+        public void TraitementMetrologie()
+        {
+
+            FichierSortie fs = new FichierSortie(_pathMetrologie, System.IO.FileMode.OpenOrCreate);
+            fs.Open();
+
+            int nbComptes = 0;
+            int nbTransacReussites = 0;
+            decimal montantTotal = 0;
+            Dictionary<int, decimal> gesFrais = new Dictionary<int, decimal>();
+
+            foreach (Gestionnaire ges in _gestionnaires)
+            {
+                gesFrais.Add(ges.Numero, ges.FraisTotaux);
+                foreach (Compte cpt in ges.Comptes)
+                {
+                    nbComptes++;
+
+                    foreach (Transaction trans in cpt.Transactions)
+                    {
+                        if ((trans.Expediteur != null && trans.Destinataire != null && trans.Expediteur.Numero == cpt.Numero) || (trans.Expediteur == null || trans.Destinataire == null))
+                        {
+                            nbTransacReussites++;
+                            montantTotal += trans.Montant;
+                        }
+                    }
+                }
+            }
+
+            fs.WriteLine("Statistiques :");
+            fs.WriteLine($"Nombre de comptes : {nbComptes}");
+            fs.WriteLine($"Nombre de transactions : {_nbTransactions}");
+            fs.WriteLine($"Nombre de réussites : {nbTransacReussites}");
+            fs.WriteLine($"Nombre d'échecs : {_nbTransactions - nbTransacReussites}");
+            fs.WriteLine($"Montant total des réussites : {montantTotal} euros");
+            fs.WriteLine("");
+            fs.WriteLine("Frais de gestion :");
+
+            foreach (KeyValuePair<int, decimal> numFrais in gesFrais)
+            {
+                fs.WriteLine($"{numFrais.Key} : {numFrais.Value} euros");
+            }
+
+            fs.Close();
         }
     }
 }
